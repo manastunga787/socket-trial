@@ -2,6 +2,7 @@ import WebSocket from 'ws';
 import chalk from 'chalk';
 import readLine from "readline";
 import util from "util";
+import { stdout } from 'process';
 
 const rl = readLine.createInterface({
     input: process.stdin,
@@ -15,7 +16,8 @@ async function init() {
     // let ip = await question(`${chalk.yellow("Enter Server Ip")}`)
     let user = await question(`${chalk.red("Enter your name: ")}`);
     if (user) {
-        let ws = new WebSocket('ws://206.189.137.251:3000');
+        //206.189.137.251
+        let ws = new WebSocket('ws://localhost:3000');
         ws.on("open", () => {
             console.log(chalk.greenBright(`${user} ! Your are now connected to the server`));
             startChart(ws, user);
@@ -23,7 +25,8 @@ async function init() {
 
         ws.on("message", (data) => {
             data = JSON.parse(data);
-            console.log(`\n${chalk.red(data.user)}: ${chalk.white(data.msg)}`);
+            console.log(`\n${chalk.red(data.user)}: ${chalk.yellow(data.msg)}`);
+            stdout.write("Me: ");
         });
 
         ws.on("close", () => {
@@ -33,7 +36,7 @@ async function init() {
 
         ws.on("error", (err) => {
             console.log(chalk.red("An error occured .........."));
-            console.log(err);
+            stdout.log(err);
         });
     }
 }
@@ -46,8 +49,11 @@ async function startChart(ws, user) {
     msg = msg.trim();
     if (msg !== "exit") {
         const data = JSON.stringify({ user, msg });
-        ws.send(data);
+        if (msg.length > 1 && msg !== "\n") {
+            ws.send(data);
+        }
         startChart(ws, user);
+
     } else {
         rl.close();
         process.exit();
