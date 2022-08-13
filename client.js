@@ -12,9 +12,10 @@ const question = util.promisify(rl.question).bind(rl);
 
 
 async function init() {
+    // let ip = await question(`${chalk.yellow("Enter Server Ip")}`)
     let user = await question(`${chalk.red("Enter your name: ")}`);
     if (user) {
-        let ws = new WebSocket('ws://localhost:3000');
+        let ws = new WebSocket('ws://206.189.137.251:3000');
         ws.on("open", () => {
             console.log(chalk.greenBright(`${user} ! Your are now connected to the server`));
             startChart(ws, user);
