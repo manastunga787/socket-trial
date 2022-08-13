@@ -26,6 +26,11 @@ async function init() {
             console.log(`\n${chalk.red(data.user)}: ${chalk.white(data.msg)}`);
         });
 
+        ws.on("close", () => {
+            console.log(`\n${chalk.red("Connection lost exiting....")}`);
+            process.exit();
+        })
+
         ws.on("error", (err) => {
             console.log(chalk.red("An error occured .........."));
             console.log(err);
