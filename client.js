@@ -17,7 +17,7 @@ async function init() {
     let user = await question(`${chalk.red("Enter your name: ")}`);
     if (user) {
         //206.189.137.251
-        let ws = new WebSocket('ws://localhost:3000');
+        let ws = new WebSocket('ws://206.189.137.251:3000');
         ws.on("open", () => {
             console.log(chalk.greenBright(`${user} ! Your are now connected to the server`));
             startChart(ws, user);
@@ -36,7 +36,7 @@ async function init() {
 
         ws.on("error", (err) => {
             console.log(chalk.red("An error occured .........."));
-            stdout.log(err);
+            console.log(err);
         });
     }
 }
